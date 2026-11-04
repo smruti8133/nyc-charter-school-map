@@ -17,7 +17,7 @@ An interactive map of charter-school locations across New York City's five borou
 ## How it works
 
 1. On page load, the browser requests GeoJSON school records from the New York State ArcGIS REST service, filtered to NYC's five counties.
-2. The application checks that each record has a school name, belongs to **Bronx, Kings, New York, Queens, or Richmond**, and has valid coordinates within a broad NYC geographic range. It also checks for API errors and unexpected responses.
+2. The application validates school names, geographic coordinates, and county information to ensure records fall within NYC's five boroughs: Manhattan (New York County), Brooklyn (Kings County), Queens, the Bronx, and Staten Island (Richmond County).
 3. Each valid record becomes a map marker with the school name and physical address in a popup.
 4. Leaflet.markercluster groups nearby markers at lower zoom levels. The displayed location count reflects valid records returned by the live service.
 
