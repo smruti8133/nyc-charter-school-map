@@ -9,7 +9,6 @@ An interactive map of charter-school locations across New York City's five borou
 | Source / tool | How it's used | Why |
 | --- | --- | --- |
 | [New York State GIS — Charter K–12 (layer 3)](https://nysgeohub.ny.gov/arcgis/rest/services/Education/NYS_Schools/FeatureServer/3) | Supplies school names, physical addresses, counties, and coordinates | Official, charter-specific geographic data; no separate geocoding needed |
-| [NYSED Charter Schools Directory](https://www.nysed.gov/charter-schools/charter-schools-directory) | Reference for school information (not queried by the map) | Independent official roster for context |
 | [Leaflet](https://leafletjs.com/) | Displays the interactive map and school popups | Lightweight and suitable for a single HTML page |
 | [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) | Groups nearby markers | Makes dense areas easier to explore |
 | [Esri World Street Map](https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer) | Supplies the street basemap | Adds geographic context |
