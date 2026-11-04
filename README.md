@@ -53,13 +53,14 @@ The map covers charter-school locations across NYC, not only Success Academy. **
 
 An internet connection is required to load the school data, map tiles, and external libraries. School locations are retrieved directly from New York State's GIS service, so the map reflects the information available from that source.
 
+
 ## Future Enhancements
 
 Depending on the intended user journey, potential enhancements include:
 
-- **Borough navigation:** Quickly zoom to schools within a selected borough.
+- **Borough and ZIP-code navigation:** Explore schools within a selected borough or near a specific location.
 - **Grade-level filters:** Find schools by elementary, middle, or high school level.
-- **ZIP-code search:** Explore schools near a specific location.
-- **School contact information:** Include available phone numbers, email addresses, or school websites within map popups to help families take the next step.
+- **School and campus grouping:** Group multiple campuses belonging to the same school or charter network.
+- **School contact information:** Include phone numbers, email addresses, or websites to help families connect with schools.
 
-These enhancements would extend the MVP from geographic discovery toward helping families identify and connect with relevant schools.
+These enhancements would extend the MVP from geographic discovery toward helping families identify, compare, and connect with relevant schools.
