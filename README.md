@@ -6,7 +6,9 @@ An interactive map of charter-school locations across New York City's five borou
 
 ## Problem Statement
 
-NYC charter schools are spread across five boroughs. The goal was to create a centralized, interactive map that makes school locations easy to find and explore.
+With hundreds of charter-school locations across NYC's five boroughs, exploring where schools are located can be difficult without a centralized geographic view.
+
+The goal was to make this information easier to navigate by creating an interactive map that allows users to visualize school distribution, explore individual locations, and access school names and addresses.
 
 ## MVP Priorities
 
