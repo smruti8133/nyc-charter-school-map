@@ -1,39 +1,32 @@
 # NYC Charter Schools Map
 
-An interactive map of charter school locations across New York City's five boroughs. Nearby locations are grouped into clusters; zoom in or click a cluster to reveal individual markers, then click a marker to view the school's name and address.
+An interactive map of charter-school locations across New York City's five boroughs. Click a numbered cluster to zoom in, then click a school marker to see its name and address.
 
-## View the map
+**Live map:** https://smruti8133.github.io/nyc-charter-school-map/
 
-Open `index.html` in a browser with an internet connection. The site can also be hosted as a static page using **GitHub Pages** (repository **Settings → Pages → Deploy from a branch → main / root**).
+## Data sources and tools
 
-## Data sources and dependencies
-
-| Resource | Role | Why it was used |
+| Source / tool | How it's used | Why |
 | --- | --- | --- |
-| [New York State GIS school locations — NYS Schools, layer 3](https://nysgeohub.ny.gov/arcgis/rest/services/Education/NYS_Schools/FeatureServer/3) | School names, physical addresses, county labels, and coordinates | A public state geospatial data service provides structured school-location records, avoiding manual address collection and geocoding. The map requests its ArcGIS REST `query` endpoint as GeoJSON when the page loads. |
-| [Esri World Street Map](https://www.arcgis.com/home/item.html?id=3b93337983e9436f8db950e38a8629af) | Background map tiles | Supplies recognizable roads, neighborhoods, and geographic context so users can understand where schools are located. |
-| [Leaflet 1.9.4](https://leafletjs.com/) | Interactive map, zooming, markers, and popups | Lightweight, open-source mapping library that works in a single HTML file without a frontend build process. |
-| [Leaflet.markercluster 1.5.3](https://github.com/Leaflet/Leaflet.markercluster) | Groups nearby markers | Keeps dense areas readable while preserving access to individual schools as users zoom in. |
-| [unpkg](https://unpkg.com/) | Delivers Leaflet and markercluster JavaScript/CSS | Loads the libraries from a CDN, keeping the repository small and setup simple. |
-
-The map also includes the standard **OpenStreetMap contributors** attribution shown with the map, where applicable; school locations are supplied by New York State, not OpenStreetMap.
+| [New York State GIS — Charter K–12 (layer 3)](https://nysgeohub.ny.gov/arcgis/rest/services/Education/NYS_Schools/FeatureServer/3) | Supplies school names, physical addresses, counties, and coordinates | Official, charter-specific geographic data; no separate geocoding needed |
+| [NYSED Charter Schools Directory](https://www.nysed.gov/charter-schools/charter-schools-directory) | Reference for school information (not queried by the map) | Independent official roster for context |
+| [Leaflet](https://leafletjs.com/) | Displays the interactive map and school popups | Lightweight and suitable for a single HTML page |
+| [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) | Groups nearby markers | Makes dense areas easier to explore |
+| [Esri World Street Map](https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer) | Supplies the street basemap | Adds geographic context |
+| [unpkg](https://unpkg.com/) | Delivers the Leaflet libraries | No build step required |
 
 ## How it works
 
-1. On page load, the browser requests GeoJSON school records from the New York State ArcGIS REST service.
-2. The application keeps records whose county is **Bronx, Kings, New York, Queens, or Richmond**, and whose coordinates fall within a broad NYC geographic range.
-3. Each matching record becomes a map marker with the school name and physical address in a popup.
-4. Leaflet.markercluster groups nearby markers at lower zoom levels. The displayed location count reflects the matching records returned by the live service.
+1. JavaScript requests GeoJSON school-location records from the NYS GIS Charter K–12 layer, filtered to NYC's five counties: Bronx, Kings, New York, Queens, and Richmond.
+2. The browser checks that each record has a school name, a matching NYC county, and valid coordinates within a broad NYC-area range. It also checks for API errors and unexpected responses.
+3. Valid locations are shown as clickable markers. Nearby markers are clustered to reduce overlap.
 
-## Implementation choices
+## Data coverage
 
-- **Simple static HTML:** No framework, server, account, or build step is needed for this small mapping task.
-- **Live public data:** The map reads directly from the state service instead of maintaining a manually copied list. As a result, the number of displayed locations may change when the service's records change.
-- **Existing mapping tools:** Leaflet, the clustering plugin, and Esri tiles cover the core mapping needs without building custom geographic functionality.
-- **Minimal scope:** The interface focuses on viewing school locations rather than adding search, filters, or AI features that are not necessary for the requested map.
+The map includes charter-school networks throughout NYC, not only Success Academy. **School locations are not necessarily the same as distinct schools:** one school may operate at multiple sites. The displayed count represents valid location records returned by the GIS service, not a count of unique charter schools.
 
-## Requirements and limitations
+The state GIS layer is the live data source. The NYSED directory is listed as a reference, but this project does not automatically compare individual records against it. Data coverage and updates depend on the state service.
 
-An internet connection is required to load the school data, map tiles, and CDN-hosted libraries. Availability and completeness depend on the state service and the fields it returns. The map does not independently audit the statewide dataset or guarantee that every currently operating charter-school site is represented.
+## Design choices
 
-No project API key is configured for the map tile endpoint used in `index.html`.
+The project focuses on a simple, usable map rather than adding search, filters, or a backend. It runs as a static HTML page and requires internet access for the GIS data, map tiles, and external libraries.

@@ -22,7 +22,7 @@
     <p id="status">Loading charter school locations…</p>
   </header>
   <div id="map" aria-label="Map of New York City charter schools"></div>
-  <footer>Data: <a href="https://nysgeohub.ny.gov/arcgis/rest/services/Education/NYS_Schools/FeatureServer/3">New York State school locations</a></footer>
+  <footer>Data: <a href="https://nysgeohub.ny.gov/arcgis/rest/services/Education/NYS_Schools/FeatureServer/3">NYS GIS — Charter K–12</a></footer>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script>
@@ -44,7 +44,7 @@
       const status = document.getElementById('status');
       try {
         const params = new URLSearchParams({
-          where: '1=1',
+          where: "COUNTY_DESC IN ('Bronx','Kings','New York','Queens','Richmond')",
           outFields: 'LEGAL_NAME,PHYSADDRLINE1,PHYSCITY,PHYSZIPCD5,COUNTY_DESC',
           returnGeometry: 'true', outSR: '4326', f: 'geojson'
         });
@@ -58,7 +58,7 @@
           const p = feature.properties || {};
           const county = String(p.COUNTY_DESC || '').toLowerCase().replace(/\s+county$/, '').trim();
           const coords = feature.geometry?.coordinates;
-          if (!nycCounties.has(county) || !Array.isArray(coords)) continue;
+          if (!nycCounties.has(county) || !Array.isArray(coords) || !String(p.LEGAL_NAME || '').trim()) continue;
           const [lon, lat] = coords;
           if (!Number.isFinite(lat) || !Number.isFinite(lon) || lat < 40.45 || lat > 40.95 || lon < -74.3 || lon > -73.65) continue;
           const address = [p.PHYSADDRLINE1, p.PHYSCITY, p.PHYSZIPCD5].filter(Boolean).join(', ');
