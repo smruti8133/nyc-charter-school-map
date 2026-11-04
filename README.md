@@ -30,8 +30,7 @@ The map covers charter-school locations across NYC, not only Success Academy. **
 - **Simple static HTML:** No framework, server, account, or build step is needed for this small mapping task.
 - **Live public data:** The map reads directly from the state service instead of maintaining a manually copied list. The displayed count may change as the service's records change.
 - **Existing mapping tools:** Leaflet, the clustering plugin, and Esri tiles cover the core mapping needs without building custom geographic functionality.
-- **Minimal scope:** The interface focuses on viewing school locations rather than adding search, filters, or AI features that are not necessary for the requested map.
 
 ## Requirements and limitations
 
-An internet connection is required to load the school data, map tiles, and CDN-hosted libraries. Availability and completeness depend on the state service and the fields it returns. The map does not independently audit the statewide dataset or guarantee that every currently operating campus is represented. The broad coordinate check is a sanity check, not a precise NYC boundary test.
+An internet connection is required to load the school data, map tiles, and external libraries. School locations are retrieved directly from New York State's GIS service, so the map reflects the information available from that source.
