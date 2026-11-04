@@ -6,9 +6,11 @@ An interactive map of charter-school locations across New York City's five borou
 
 ## Problem Statement
 
-With hundreds of charter-school locations across NYC's five boroughs, exploring where schools are located can be difficult without a centralized geographic view.
+**Target users:** Parents and guardians exploring charter-school options for their children in NYC.
 
-The goal was to make this information easier to navigate by creating an interactive map that allows users to visualize school distribution, explore individual locations, and access school names and addresses.
+With hundreds of charter-school locations across NYC's five boroughs, understanding where schools are located and exploring available options can be challenging without a centralized geographic view.
+
+**Goal:** Create an interactive map that helps users visualize school locations, explore schools across boroughs, and access basic information such as school names and addresses.
 
 ## MVP Priorities
 
@@ -53,8 +55,11 @@ An internet connection is required to load the school data, map tiles, and exter
 
 ## Future Enhancements
 
-- **Borough navigation:** Quickly zoom to a selected borough.
+Depending on the intended user journey, potential enhancements include:
+
+- **Borough navigation:** Quickly zoom to schools within a selected borough.
 - **Grade-level filters:** Find schools by elementary, middle, or high school level.
 - **ZIP-code search:** Explore schools near a specific location.
+- **School contact information:** Include available phone numbers, email addresses, or school websites within map popups to help families take the next step.
 
-These were deferred to prioritize a functional, reliable MVP within the given timeframe.
+These enhancements would extend the MVP from geographic discovery toward helping families identify and connect with relevant schools.
