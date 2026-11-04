@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NYC Charter Schools Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; color: #222; }
+    header { padding: 16px 20px; }
+    h1 { margin: 0 0 6px; font-size: 24px; }
+    p { margin: 0; font-size: 14px; color: #555; }
+    #map { height: calc(100vh - 110px); min-height: 400px; }
+    footer { padding: 9px 20px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>NYC Charter Schools</h1>
+    <p id="status">Loading charter school locations…</p>
+  </header>
+  <div id="map" aria-label="Map of New York City charter schools"></div>
+  <footer>Data: <a href="https://nysgeohub.ny.gov/arcgis/rest/services/Education/NYS_Schools/FeatureServer/3">New York State school locations</a></footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script>
+    const map = L.map('map').setView([40.73, -73.94], 11);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri and its data providers', maxZoom: 19
+    }).addTo(map);
+
+    const markers = L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 55 });
+    map.addLayer(markers);
+
+    const endpoint = 'https://nysgeohub.ny.gov/arcgis/rest/services/Education/NYS_Schools/FeatureServer/3/query';
+    const nycCounties = new Set(['bronx', 'kings', 'new york', 'queens', 'richmond']);
+    const escapeHtml = text => String(text ?? '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[c]);
+
+    async function showSchools() {
+      const status = document.getElementById('status');
+      try {
+        const params = new URLSearchParams({
+          where: '1=1',
+          outFields: 'LEGAL_NAME,PHYSADDRLINE1,PHYSCITY,PHYSZIPCD5,COUNTY_DESC',
+          returnGeometry: 'true', outSR: '4326', f: 'geojson'
+        });
+        const response = await fetch(`${endpoint}?${params}`);
+        if (!response.ok) throw new Error('Data request failed');
+        const data = await response.json();
+        if (data.error || !Array.isArray(data.features)) throw new Error('Invalid school data');
+        let count = 0;
+        const bounds = [];
+        for (const feature of data.features) {
+          const p = feature.properties || {};
+          const county = String(p.COUNTY_DESC || '').toLowerCase().replace(/\s+county$/, '').trim();
+          const coords = feature.geometry?.coordinates;
+          if (!nycCounties.has(county) || !Array.isArray(coords)) continue;
+          const [lon, lat] = coords;
+          if (!Number.isFinite(lat) || !Number.isFinite(lon) || lat < 40.45 || lat > 40.95 || lon < -74.3 || lon > -73.65) continue;
+          const address = [p.PHYSADDRLINE1, p.PHYSCITY, p.PHYSZIPCD5].filter(Boolean).join(', ');
+          L.marker([lat, lon]).addTo(markers).bindPopup(`<strong>${escapeHtml(p.LEGAL_NAME || 'Charter school')}</strong><br>${escapeHtml(address)}`);
+          bounds.push([lat, lon]);
+          count++;
+        }
+        if (!count) throw new Error('No NYC schools found');
+        status.textContent = `${count} school locations shown. Zoom in to see individual schools; click a pin for details.`;
+        map.fitBounds(bounds, {padding: [20, 20], maxZoom: 12});
+      } catch (error) {
+        status.textContent = 'Could not load school locations. Please refresh to try again.';
+        console.error(error);
+      }
+    }
+    showSchools();
+  </script>
+</body>
+</html>
