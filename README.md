@@ -26,7 +26,3 @@ An interactive map of charter-school locations across New York City's five borou
 The map includes charter-school networks throughout NYC, not only Success Academy. **School locations are not necessarily the same as distinct schools:** one school may operate at multiple sites. The displayed count represents valid location records returned by the GIS service, not a count of unique charter schools.
 
 The state GIS layer is the live data source. The NYSED directory is listed as a reference, but this project does not automatically compare individual records against it. Data coverage and updates depend on the state service.
-
-## Design choices
-
-The project focuses on a simple, usable map rather than adding search, filters, or a backend. It runs as a static HTML page and requires internet access for the GIS data, map tiles, and external libraries.
