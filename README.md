@@ -4,6 +4,20 @@ An interactive map of charter-school locations across New York City's five borou
 
 **Live map:** https://smruti8133.github.io/nyc-charter-school-map/
 
+## Problem Statement
+
+NYC charter schools are spread across five boroughs. The goal was to create a centralized, interactive map that makes school locations easy to find and explore.
+
+## MVP Priorities
+
+Given the one-hour time constraint, I focused on three priorities:
+
+1. **Coverage:** Display charter-school locations across all five boroughs using New York State GIS data.
+2. **Reliability:** Validate school names, counties, and coordinates before displaying locations.
+3. **Usability:** Use interactive markers and clustering to make hundreds of locations easy to explore.
+
+These features directly address the core goal of making school locations accessible without adding unnecessary complexity.
+
 ## Data sources and tools
 
 | Source / tool | How it's used | Why |
@@ -34,3 +48,11 @@ The map covers charter-school locations across NYC, not only Success Academy. **
 ## Requirements and limitations
 
 An internet connection is required to load the school data, map tiles, and external libraries. School locations are retrieved directly from New York State's GIS service, so the map reflects the information available from that source.
+
+## Future Enhancements
+
+- **Borough navigation:** Quickly zoom to a selected borough.
+- **Grade-level filters:** Find schools by elementary, middle, or high school level.
+- **ZIP-code search:** Explore schools near a specific location.
+
+These were deferred to prioritize a functional, reliable MVP within the given timeframe.
