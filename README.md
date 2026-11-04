@@ -8,7 +8,7 @@ An interactive map of charter-school locations across New York City's five borou
 
 | Source / tool | How it's used | Why |
 | --- | --- | --- |
-| [New York State GIS — Charter K–12 (layer 3)](https://nysgeohub.ny.gov/arcgis/rest/services/Education/NYS_Schools/FeatureServer/3) | Supplies school names, physical addresses, counties, and coordinates | Official, charter-specific geographic data; no separate geocoding needed |
+| [New York State GIS — Charter K–12 (layer 3)](https://nysgeohub.ny.gov/arcgis/rest/services/Education/NYS_Schools/FeatureServer/3) | Supplies school names, physical addresses, counties, and coordinates | Official charter-specific geographic data; no separate geocoding needed |
 | [Leaflet](https://leafletjs.com/) | Displays the interactive map and school popups | Lightweight and suitable for a single HTML page |
 | [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) | Groups nearby markers | Makes dense areas easier to explore |
 | [Esri World Street Map](https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer) | Supplies the street basemap | Adds geographic context |
@@ -16,12 +16,22 @@ An interactive map of charter-school locations across New York City's five borou
 
 ## How it works
 
-1. JavaScript requests GeoJSON school-location records from the NYS GIS Charter K–12 layer, filtered to NYC's five counties: Bronx, Kings, New York, Queens, and Richmond.
-2. The browser checks that each record has a school name, a matching NYC county, and valid coordinates within a broad NYC-area range. It also checks for API errors and unexpected responses.
-3. Valid locations are shown as clickable markers. Nearby markers are clustered to reduce overlap.
+1. On page load, the browser requests GeoJSON school records from the New York State ArcGIS REST service, filtered to NYC's five counties.
+2. The application checks that each record has a school name, belongs to **Bronx, Kings, New York, Queens, or Richmond**, and has valid coordinates within a broad NYC geographic range. It also checks for API errors and unexpected responses.
+3. Each valid record becomes a map marker with the school name and physical address in a popup.
+4. Leaflet.markercluster groups nearby markers at lower zoom levels. The displayed location count reflects valid records returned by the live service.
 
 ## Data coverage
 
-The map includes charter-school networks throughout NYC, not only Success Academy. **School locations are not necessarily the same as distinct schools:** one school may operate at multiple sites. The displayed count represents valid location records returned by the GIS service, not a count of unique charter schools.
+The map covers charter-school locations across NYC, not only Success Academy. **School locations and distinct schools are not necessarily the same:** a school may operate at more than one physical site. The marker count represents location records, not a verified count of unique schools.
 
-The state GIS layer is the live data source. The NYSED directory is listed as a reference, but this project does not automatically compare individual records against it. Data coverage and updates depend on the state service.
+## Implementation choices
+
+- **Simple static HTML:** No framework, server, account, or build step is needed for this small mapping task.
+- **Live public data:** The map reads directly from the state service instead of maintaining a manually copied list. The displayed count may change as the service's records change.
+- **Existing mapping tools:** Leaflet, the clustering plugin, and Esri tiles cover the core mapping needs without building custom geographic functionality.
+- **Minimal scope:** The interface focuses on viewing school locations rather than adding search, filters, or AI features that are not necessary for the requested map.
+
+## Requirements and limitations
+
+An internet connection is required to load the school data, map tiles, and CDN-hosted libraries. Availability and completeness depend on the state service and the fields it returns. The map does not independently audit the statewide dataset or guarantee that every currently operating campus is represented. The broad coordinate check is a sanity check, not a precise NYC boundary test.
